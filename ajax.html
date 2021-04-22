@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>Hello CORS</title>
+        <script src="jquery.min.js"></script>
+        <script type="text/javascript">
+
+$(document).ready(function() {
+    $.ajax({
+        url: "http://localhost:8080/applications"
+    }).then(function(data, status, jqxhr) {
+       console.log("ok")
+       console.log(jqxhr);
+    });
+});
+    </script>
+    </head>
+
+    <body>
+    
+    </body>
+</html>

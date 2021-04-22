@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <title>amis demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <link rel="stylesheet" href="sdk/sdk.css"/>
+    <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
+    <!-- <link rel="stylesheet" href="sdk-ie11.css" /> -->
+    <!-- 不过 amis 开发团队几乎没测试过 IE 11 下的效果，所以可能有细节功能用不了，如果发现请报 issue -->
+    <style>
+        html,
+        body,
+        .app-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="root" class="app-wrapper"></div>
+<script src="sdk/sdk.js"></script>
+<script type="text/javascript">
+    (function () {
+        let amis = amisRequire('amis/embed');
+        // 通过替换下面这个配置来生成不同页面
+        let amisJSON = {
+            //"$schema": "https://houtai.baidu.com/v2/schemas/page.json#",
+            "type": "page",
+            "title": "${title}",
+            "toolbar": [
+                {
+                    "type": "button",
+                    "actionType": "dialog",
+                    "label": "新增",
+                    "icon": "fa fa-plus pull-left",
+                    "primary": true,
+                    "dialog": {
+                        "title": "新增",
+                        "body": {
+                            "type": "form",
+                            "name": "applications-edit-form",
+                            "api": "post:http://localhost:8080/sequential-processes",
+                            "controls": [
+                                {
+                                    "type": "textarea",
+                                    "name": "content",
+                                    "label": "申请内容",
+                                    "required": true
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "body": [
+                {
+                    "type": "crud",
+                    "api": "http://localhost:8080/sequential-processes?type=myApplications",
+                    "perPage": 3,
+                    "headerToolbar": [
+                        "filter-toggler",
+                        {
+                            "type": "columns-toggler",
+                            "align": "right"
+                        },
+                        {
+                            "type": "drag-toggler",
+                            "align": "right"
+                        },
+                        {
+                            "type": "pagination",
+                            "align": "right"
+                        }
+                    ],
+                    "footerToolbar": [
+                        "statistics",
+                        "switch-per-page",
+                        "pagination"
+                    ],
+                    "columns": [
+                        {
+                            "name": "id",
+                            "label": "ID",
+                            "type": "text",
+                            "remark": "id"
+                        },
+                        {
+                            "name": "content",
+                            "label": "申请内容",
+                            "type": "text"
+                        },
+                        {
+                            "type": "text",
+                            "label": "申请状态",
+                            "name": "status"
+                        },
+                        {
+                            "type": "text",
+                            "label": "当前审批者",
+                            "name": "currentAssignee"
+                        }
+                    ],
+                    "messages": {},
+                    "itemActions": [],
+                    "bulkActions": [],
+                    "combineNum": 1,
+                    "visibleOn": "id == 1"
+
+                },
+                {
+                    "type": "crud",
+                    "api": "http://localhost:8080/sequential-processes?type=myApprovals",
+                    "perPage": 3,
+                    "filter": {
+                        "title": "条件搜索",
+                        "submitText": "",
+                        "controls": [
+                            {
+                                "type": "text",
+                                "name": "keywords",
+                                "placeholder": "通过关键字搜索",
+                                "addOn": {
+                                    "label": "搜索",
+                                    "type": "submit"
+                                }
+                            },
+                            {
+                                "type": "plain",
+                                "text": "这里的表单项可以配置多个"
+                            }
+                        ]
+                    },
+                    "headerToolbar": [
+                        "filter-toggler",
+                        {
+                            "type": "text",
+                            "label": "当前用户",
+                            "name": "currentUser"
+                        },
+                        {
+                            "type": "columns-toggler",
+                            "align": "right"
+                        },
+                        {
+                            "type": "drag-toggler",
+                            "align": "right"
+                        },
+                        {
+                            "type": "pagination",
+                            "align": "right"
+                        }
+                    ],
+                    "footerToolbar": [
+                        "statistics",
+                        "switch-per-page",
+                        "pagination"
+                    ],
+                    "columns": [
+                        {
+                            "name": "id",
+                            "label": "ID",
+                            "type": "text",
+                            "remark": "id"
+                        },
+                        {
+                            "name": "content",
+                            "label": "申请内容",
+                            "type": "text"
+                        },
+                        {
+                            "type": "text",
+                            "label": "申请者",
+                            "name": "createdBy"
+                        },
+                        {
+                            "type": "operation",
+                            "label": "操作",
+                            "width": 100,
+                            "buttons": [
+                                {
+                                    "type": "button",
+                                    "icon": "fa fa-pencil",
+                                    "tooltip": "审批",
+                                    "actionType": "drawer",
+                                    "drawer": {
+                                        "position": "left",
+                                        "size": "lg",
+                                        "title": "审批",
+                                        "body": {
+                                            "type": "form",
+                                            "name": "sample-edit-form",
+                                            "api": "http://localhost:8080/sequential-processes/$id/handle",
+                                            "controls": [
+                                                {
+                                                    "type": "static",
+                                                    "label": "申请内容",
+                                                    "name": "content"
+                                                },
+                                                {
+                                                    "type": "divider"
+                                                },
+                                                {
+                                                    "type": "static",
+                                                    "label": "申请者",
+                                                    "name": "createdBy"
+                                                },
+                                                {
+                                                    "type": "divider"
+                                                },
+                                                {
+                                                    "type": "radios",
+                                                    "name": "approved",
+                                                    "label": "批准意见",
+                                                    "required": true,
+                                                    "options": [
+                                                        {
+                                                            "label": "同意",
+                                                            "value": true,
+                                                        },
+                                                        {
+                                                            "label": "拒绝",
+                                                            "value": false
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "divider"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "memo",
+                                                    "label": "备注"
+                                                },
+                                                {
+                                                    "type": "divider"
+                                                },
+                                                {
+                                                    "type": "table",
+                                                    "name": "historyTasks",
+                                                    "label": "审批记录",
+                                                    "columns": [
+                                                        {
+                                                            "name": "assignee",
+                                                            "label": "审批人"
+                                                        },
+                                                        {
+                                                            "name": "approved",
+                                                            "label": "审批意见"
+                                                        },
+                                                        {
+                                                            "name": "memo",
+                                                            "label": "备注"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ],
+                            "toggled": true
+                        }
+                    ],
+                    "messages": {},
+                    "itemActions": [],
+                    "bulkActions": [],
+                    "combineNum": 1,
+                    "visibleOn": "id == 2",
+                }
+            ],
+            "aside": [
+                {
+                    "type": "nav",
+                    "stacked": true,
+                    "links": [
+                        {
+                            "label": "我的申请",
+                            "to": "?id=1&title=我的申请",
+                            "activeOn": ""
+                        },
+                        {
+                            "label": "我的审批",
+                            "to": "?id=2&title=我的审批",
+                            "active": ""
+                        }
+                    ]
+                }
+            ],
+            "messages": {},
+            "initFetch": true,
+            "name": "我的申请"
+            // "initApi": 
+        };
+        let amisScoped = amis.embed('#root',
+            amisJSON,
+            {},
+            {
+                fetcher: function (params) {
+                    var method = params.method;
+                    var url = params.url;
+                    var data = params.data;
+                    return new Promise(function (resolve, reject) {
+                        fetch(url, {
+                            method: method,
+                            body: JSON.stringify(data),
+                            headers: new Headers({"Content-Type": "application/json"})
+                        }).then(function (res) {
+                            return res.text();
+                        }).then(function (response) {
+                            console.log(response);
+                            resolve({"data": response ? JSON.parse(response) : {}});
+                        });
+                    });
+                }
+            });
+    })();
+</script>
+</body>
+</html>
