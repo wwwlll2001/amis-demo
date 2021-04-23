@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-<div id="root" class="app-wrapper"></div>
+<div id="root" class="app-wrapper "></div>
 <script src="sdk/sdk.js"></script>
 <script type="text/javascript">
     (function () {
@@ -35,23 +35,37 @@
         let amisJSON = {
             "type": "page",
             "body": {
-                "type": "form",
-                "name": "applications-edit-form",
-                "title": "登录",
-                "api": "post:http://localhost:8080/login",
-                "redirect": "/application.html?id=1",
-                "controls": [
+                "type": "grid",
+                "columns": [
                     {
-                        "type": "text",
-                        "name": "userName",
-                        "label": "用户名",
-                        "required": true,
-                        "size": "md",
+                        "type": "tpl",
+                        "md": 5,
                     },
                     {
-                        "type": "submit",
-                        "label": "登录"
-                    }
+                        "type": "form",
+                        "align": "center",
+                        "name": "applications-edit-form",
+                        "title": "登录",
+                        "api": "post:http://localhost:8080/login",
+                        "redirect": "/application.html?id=1",
+                        "controls": [
+                            {
+                                "type": "text",
+                                "name": "userName",
+                                "label": "用户名",
+                                "required": true
+                            },
+                            {
+                                "type": "submit",
+                                "label": "登录"
+                                "className": "login-form"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "tpl",
+                        "md": 5,
+                    },
                 ]
             }
         };
