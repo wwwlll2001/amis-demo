@@ -39,26 +39,11 @@
             "toolbar": [
                 {
                     "type": "button",
-                    "actionType": "dialog",
-                    "label": "新增",
-                    "icon": "fa fa-plus pull-left",
-                    "primary": true,
-                    "dialog": {
-                        "title": "新增",
-                        "body": {
-                            "type": "form",
-                            "name": "applications-edit-form",
-                            "api": "post:http://localhost:8080/sequential-processes",
-                            "controls": [
-                                {
-                                    "type": "textarea",
-                                    "name": "content",
-                                    "label": "申请内容",
-                                    "required": true
-                                }
-                            ]
-                        }
-                    }
+                    "label": "退出",
+                    "actionType": "ajax",
+                    "api": "http://localhost:8080/logout",
+                    "redirect": "/login.html"
+
                 }
             ],
             "body": [
@@ -79,6 +64,30 @@
                         {
                             "type": "pagination",
                             "align": "right"
+                        },
+                        {
+                            "type": "button",
+                            "actionType": "dialog",
+                            "label": "新增",
+                            "icon": "fa fa-plus pull-left",
+                            "align": "right",
+                            "primary": true,
+                            "dialog": {
+                                "title": "新增",
+                                "body": {
+                                    "type": "form",
+                                    "name": "applications-edit-form",
+                                    "api": "post:http://localhost:8080/sequential-processes",
+                                    "controls": [
+                                        {
+                                            "type": "textarea",
+                                            "name": "content",
+                                            "label": "申请内容",
+                                            "required": true
+                                        }
+                                    ]
+                                }
+                            }
                         }
                     ],
                     "footerToolbar": [

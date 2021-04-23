@@ -35,19 +35,22 @@
         let amisJSON = {
             "type": "page",
             "body": {
-                "type": "nav",
-                "stacked": true,
-                "className": "w-md",
-                "links": [
+                "type": "form",
+                "name": "applications-edit-form",
+                "title": "登录",
+                "api": "post:http://localhost:8080/login",
+                "redirect": "/application.html?id=1",
+                "controls": [
                     {
-                        "label": "Nav 1",
-                        "to": "http://www.baidu.com",
-                        "icon": "https://suda.cdn.bcebos.com/images%2F2021-01%2Fdiamond.svg",
-                        "active": true
+                        "type": "text",
+                        "name": "userName",
+                        "label": "用户名",
+                        "required": true,
+                        "size": "md",
                     },
                     {
-                        "label": "Nav 2",
-                        "to": "http://www.126.com"
+                        "type": "submit",
+                        "label": "登录"
                     }
                 ]
             }
